@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-     'social_django', 
+    'social_django', 
+    'crispy_forms',
+    'divvy',
+
 ]
 
 MIDDLEWARE = [
@@ -108,8 +111,6 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.google.GoogleOAuth',
-    'social_core.backends.facebook.FacebookOAuth2',
-
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -126,8 +127,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-SOCIAL_AUTH_FACEBOOK_KEY = '392456474598674'
-SOCIAL_AUTH_FACEBOOK_SECRET = '94857c2d875e7a33a26c55294a40ea72'
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='506843401145-s302scs794r1sr8jmafi7ouk8vcgeq2j.apps.googleusercontent.com' 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'bgJ18Gp-GAAt__tgOR6_VEXH'
@@ -136,14 +135,17 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'bgJ18Gp-GAAt__tgOR6_VEXH'
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static'),
+    os.path.join(BASE_DIR, 'static'),
 )
+
+LOGIN_REDIRECT_URL = '/' 
+
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'home'
+
 
 SECURE_SSL_REDIRECT = False 
 

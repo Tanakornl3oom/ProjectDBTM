@@ -3,8 +3,28 @@ from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeFor
 from django.contrib.auth import update_session_auth_hash, login, authenticate
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from .forms import CustomerForm
+from .models import Customer
+from django.views.generic.edit import CreateView
+from django.http import HttpResponseRedirect
+# from django.contrib.auth.models import customer
+
+
+
 
 from social_django.models import UserSocialAuth
+
+
+class CreateCustomerView(CreateView):
+	queryset = Customer()
+	template_name='register.html'
+	form_class = CustomerForm
+	success_url = '/login/'
+
+	def form_valid(self,form):
+		form.instance.user = self.request.user
+		return super(CreateCustomerView, self).form_valid(form)
+
 
 def signup(request):
     if request.method == 'POST':
@@ -25,22 +45,6 @@ def signup(request):
 def home(request):
     return render(request, './home.html')
 
-@login_required
-def settings(request):
-    user = request.user
-
-    try:
-        facebook_login = user.social_auth.get(provider='facebook')
-    except UserSocialAuth.DoesNotExist:
-        facebook_login = None
-    
-    
-    can_disconnect = (user.social_auth.count() > 1 or user.has_usable_password())
-
-    return render(request, 'core/settings.html', {
-        'facebook_login': facebook_login,
-        'can_disconnect': can_disconnect
-    })
 
 @login_required
 def password(request):
@@ -61,3 +65,23 @@ def password(request):
     else:
         form = PasswordForm(request.user)
     return render(request, './password.html', {'form': form})
+
+@login_required
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        Customer = authenticate(request, username=username, password=password)
+        if Customer is not None:
+            print("user login suss")
+            login(request, Customer)
+            messages.success(request, 'login Susscess')
+            return redirect('/')            
+        else:
+            print("user login failed")            
+            messages.error(request, 'Username or password invalid')
+    else:
+        messages.error(request, 'Error method')
+    return redirect('/customer/login/')            
+        
+        

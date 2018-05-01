@@ -21,10 +21,13 @@ from divvy import views as core_views
 urlpatterns = [
 
     path('', core_views.home, name='home'),
-    path('login/', auth_views.login, name='login'),
+    # path('login/', auth_views.login, name='login'),
     path('logout/', auth_views.logout, name='logout'),
+    path('checklogin/', core_views.login, name='chklogin'),
     path('signup/', core_views.signup, name='signup'),
-    path('settings/', core_views.settings, name='settings'),
+    path('customer/',auth_views.login,{'template_name': './registration/login.html'},name='customer'),
+    path('customer/login/',auth_views.login,{'template_name': './customer.html'},name='customer_login'),
+    path('customer/register/',core_views.CreateCustomerView.as_view(), name='customer_register'),
     path('settings/password/', core_views.password, name='password'),
     path('auth/', include('social_django.urls', namespace='social')),
     path('admin/', admin.site.urls),
