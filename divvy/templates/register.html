@@ -19,34 +19,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <div class="py-5">
-    <!-- <form method="post" action="{% url 'customer_register' %}">
-        {% csrf_token %}
-    <div align="center">
-        <table>
-            <tr>
-            <td>{{ form.username.label_tag }}</td>
-            <td>{{ form.username }}</td>
-            </tr>
-            <tr>
-            <td>{{ form.password.label_tag }}</td>
-            <td>{{ form.password }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.email.label_tag }}</td>
-                <td>{{ form.email }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.image.label_tag }}</td>
-                    <td>{{ form.image }}</td>
-                    </tr>
-            </table>
-   <input type="submit" value="REGISTER">
-  </div>
-</form> -->
+ 
 <div align="center">
-
-{% load crispy_forms_tags %}
-{% crispy form %}
+  
+  {% load crispy_forms_tags %}
+  {% crispy form %}
   </div>
 </body>
 

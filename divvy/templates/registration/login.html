@@ -7,12 +7,12 @@
   <link rel="stylesheet" href="{% static 'css/background.css' %}" type="text/css">
 </head>
 
-
 <body>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="https://v40.pingendo.com/assets/4.0.0/default/theme.css" type="text/css">
+
   <div class="py-5">
     <div class="container">
       <div class="row">
@@ -22,26 +22,29 @@
     </div>
   </div>
   <div align="center">
-    <font color="white" size="6">LOGIN</font>
+    <font color="white" size="6">Customer</font>
   </div>
-  <div class="py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12" align="center">
-            <a href="/customer/login"><button class="btn text-center btn-light" type="submit">LOGIN with DIVVY account</button></a>
-        </div>
-      </div>
-    </div>
-    <div align="center">
-      <font color="white" size="6">or </font>
-    </div>
-    <div align="center">
-        <a href="{% url 'social:begin' 'google-oauth2' %}"><button class="btn text-center btn-light" type="submit">LOGIN with Gmail</button></a>
-    </div>
-    <div align="center">
-      <font color="white"><a href="/customer/register" >Create a DIVVY account? </a>'i will find how to click text'</font>
-    </div>
+  <div align="center">
+
+    <form method="post" action="{% url 'customer_login' %}">
+
+      {% csrf_token %}
+      <table>
+        <tr>
+          <td>{{ form.username.label_tag }}</td>
+          <td>{{ form.username }}</td>
+        </tr>
+        <tr>
+          <td>{{ form.password.label_tag }}</td>
+          <td>{{ form.password }}</td>
+        </tr>
+      </table>
+
+      <input class="btn btn-primary" type="submit" value="login" />
+      <input type="hidden" name="next" value="{{ next }}" />
+    </form>
   </div>
+
 </body>
 
 </html>

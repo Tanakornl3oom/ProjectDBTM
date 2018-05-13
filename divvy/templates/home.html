@@ -1,56 +1,345 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html>
 
 <head>
-  <link rel="stylesheet"  href="{% static 'css/background.css' %}" type="text/css">
- </head>
-
-<body>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="https://v40.pingendo.com/assets/4.0.0/default/theme.css" type="text/css">
-  <div class="py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12" align="center">
-          <img src="{% static './img/logo.png' %}" height="100"> </div>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet"  href="{% static 'css/background.css' %}" type="text/css">  
+  <style>
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+      position: fixed;
+      display: inline;
+      top: 0;
+      width: 100%;
+      height: 7%;
+      float: left;
+    }
+
+    li {
+      float: left;
+    }
+
+    li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    li a:hover:not(.active) {
+      background-color: #111;
+    }
+
+   
+    .mySlides {
+      display: none
+    }
+
+    .Slides {
+      display: none
+    }
+
+    .w3-left,
+    .w3-right,
+    .w3-badge {
+      cursor: pointer
+    }
+
+    .w3-badge {
+      height: 13px;
+      width: 13px;
+      padding: 0
+    }
+
+    div.scrollmenu {
+      display: block;
+      margin: 12px;
+      box-sizing: border-box;
+      white-space: nowrap;
+      overflow: auto
+    }
+
+    div.scrollmenu a {
+      display: inline-block;
+      color: white;
+    }
+
+    div.scrollmenu a:hover {
+      background-color: #777;
+    }
+
+    .image {
+      height: 100%;
+      width: calc((100% / 3) - 8px);
+      float: left;
+    }
+
+    .popbox {
+      width: calc(100% - 24px);
+      height: 20%;
+      margin: 12px;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .mar_right {
+      margin-right: 8px;
+      margin-bottom: 6px;
+    }
+
+    .headtext {
+      padding-left: 2%;
+      box-sizing: border-box;
+      width: 100%;
+    }
+    /* iPhone4 */
+
+    @media (width: 320px) and (height: 480px) {}
+    /* iPhone5 */
+
+    @media (width: 320px) {
+      .menubar {
+        height: 45px;
+        width: 50px;
+      }
+    }
+    /* galaxy s5 */
+
+    @media (min-width: 360px) {}
+    /* iPhone6 */
+
+    @media (width: 375px) and (height: 667px) {
+      .menubar {
+        height: 46px;
+        width: 62px;
+      }
+    }
+    /* iPhone6+ */
+
+    @media (width: 414px) and (height: 736px) {
+      .menubar {
+        height: 50px;
+        width: 65px;
+      }
+    }
+    /* s8+ */
+
+    @media (min-width: 360px) and (min-height: 740px) {
+      .menubar {
+        height: 50px;
+        width: 60px;
+      }
+    }
+    /* iPhone X */
+
+    @media (min-width: 375px) and (min-height: 812px) {
+      .menubar {
+        height: 55px;
+        width: 65px;
+      }
+    }
+    /* iPad */
+
+    @media (min-width: 768px) and (min-height: 1024px) {
+      .menubar {
+        height: 75px;
+        width: 100px;
+      }
+    }
+    /* iPad pro */
+
+    @media (min-width: 1024px) and (min-height: 1366px) {
+      .menubar {
+        height: 100px;
+        width: 130px;
+      }
+    }
+
+    .logout {
+      color: #ffda44;
+      float: right;
+      height: 100%;
+      margin-right: 12px;
+    }
+
+    .set_center_right {
+      position: relative;
+      float: right;
+      top: 50%;
+      /* left: 50%; */
+      transform: translateY(-50%);
+    }
+
+    .hotdeal {
+      width: calc(100% - 24px);
+      margin-left: 12px;
+      height: 140px;
+      overflow: hidden;
+    }
+
+    .set_overflow {
+      overflow-x: auto;
+      overflow-y: hidden;
+      height: 100%;
+      width: 100%;
+      position: relative;
+    }
+
+    .set_overflowX {
+      width: max-content;
+      height: 100%;
+    }
+
+    .content_hotdeal {
+      width: auto;
+      height: 100%;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .eachimg {
+      height: 100%;
+      /* width: 150px; */
+      margin-right: 12px;
+      position: relative;
+      box-sizing: border-box;
+      float: left;
+    }
+
+    .manu_relative {
+      width: 100%;
+      height: 7%;
+      position: relative;
+    }
+
+    .manubar {
+      background-color: #333;
+      width: 100%;
+      height: 7%;
+      /* position: relative; */
+      box-sizing: border-box;
+      position: fixed;
+      top: 0;
+      z-index: 10;
+    }
+
+    .eachmenu {
+      width: calc(100% / 4);
+      height: 100%;
+      position: relative;
+      box-sizing: border-box;
+      float: left;
+    }
+
+    .set_center {
+      position: relative;
+      float: left;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .textlogout {
+      color: #FFDA44;
+      font-size: 10px;
+    }
+  </style>
+</head>
+
+<body class="">
+  
+
+  <div class="manu_relative">
+    <div class="manubar">
+      <div class="eachmenu">
+        <span class="set_center">
+          <a href="/profile">
+            <img class="menubar" src="{% static './img/m.png' %}"> </a>
+        </span>
+      </div>
+      <div class="eachmenu">
+        <span class="set_center">
+          <img class="menubar" src="{% static './img/h.png' %}"> </span>
+      </div>
+      <div class="eachmenu">
+        <span class="set_center">
+          <a href="/notification"> 
+            {% if status %}         
+              <img class="menubar" src="{% static './img/nt.png' %}"> 
+            {% else %}
+              <img class="menubar" src="{% static './img/n.png' %}"> 
+            {% endif %}
+        </span>
+      </a>
+      </div>
+      <div class="eachmenu">
+        <span class="set_center">
+          <a href="/logout">
+            <img class="menubar" src="{% static './img/logout.png' %}"> </a>
+        </span>
       </div>
     </div>
   </div>
-  <div align="center">
-    <font color="white">You are..?</font>
+  <div class="headtext">
+    <h2>HOT DEAL!</h2>
   </div>
-  <div class="py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12" align="center">
-          <a href="/customer/"><button class="btn text-center btn-light" type="submit">Customer</button></a>
+  <div class="hotdeal">
+    <div class="set_overflow">
+      <div class="set_overflowX">
+        {% for i in promotions%}
+          {% if i.type_promotion == 'N'%}
+            <a href="/promotion/{{i.pid}}">
+              <img src="{{i.image_promotion.url}}" class="eachimg"> 
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="headtext">
+    <h2>RECOMMEND!</h2>
+  </div>
+  <div class="hotdeal">
+      <div class="set_overflow">
+        <div class="set_overflowX">
+          {% for i in promotions%}
+            {% if i.type_promotion == 'P'%}
+              <a href="/promotion/{{i.pid}}">
+                <img src="{{i.image_promotion.url}}" class="eachimg"> 
+              </a>
+            {% endif %}
+          {% endfor %}
         </div>
       </div>
-      <div align="center">
-        <font color="white">Click 'Customer' if you want to know</font>
-      </div>
     </div>
-    <div align="center">
-      <font color="white">all of promotions </font>
-    </div>
-    <div align="center">
-      <font color="white" size="6">or </font>
-    </div>
-    <div align="center">
-      <button class="btn text-center btn-light" type="submit">Seller</button>
-    </div>
-    <div align="center">
-      <font color="white">Click 'Seller' if you want to announce</font>
-    </div>
-    <div align="center">
-      <font color="white">your promotions</font>
-    </div>
+  <div class="headtext">
+    <h2>POPULAR PROMOTION</h2>
+  </div>
+  <div class="popbox">
+    {% for i in promotions%}
+        <a href="/promotion/{{i.pid}}">
+          <img src="{{i.image_promotion.url}}" class="image mar_right"> 
+        </a>
+    {% endfor %}
   </div>
   
+   
+ 
 </body>
-
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </html>

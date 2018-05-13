@@ -1,30 +1,28 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeForm, UserCreationForm
+from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeForm, UserCreationForm 
 from django.contrib.auth import update_session_auth_hash, login, authenticate
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from .forms import CustomerForm
-from .models import Customer
+from .forms import UserForm,MemberForm
+from .models import Member,Promotion , Interest
 from django.views.generic.edit import CreateView
 from django.http import HttpResponseRedirect
-# from django.contrib.auth.models import customer
-
-
+from django.contrib.auth.models import User
+from django.contrib.auth.views import logout
 
 
 from social_django.models import UserSocialAuth
 
 
 class CreateCustomerView(CreateView):
-	queryset = Customer()
+	queryset = User()
 	template_name='register.html'
-	form_class = CustomerForm
+	form_class = UserForm
 	success_url = '/login/'
 
 	def form_valid(self,form):
 		form.instance.user = self.request.user
 		return super(CreateCustomerView, self).form_valid(form)
-
 
 def signup(request):
     if request.method == 'POST':
@@ -43,45 +41,104 @@ def signup(request):
 
 @login_required
 def home(request):
-    return render(request, './home.html')
-
-
-@login_required
-def password(request):
-    if request.user.has_usable_password():
-        PasswordForm = PasswordChangeForm
-    else:
-        PasswordForm = AdminPasswordChangeForm
-
-    if request.method == 'POST':
-        form = PasswordForm(request.user, request.POST)
-        if form.is_valid():
-            form.save()
-            update_session_auth_hash(request, form.user)
-            messages.success(request, 'Your password was successfully updated!')
-            return redirect('password')
-        else:
-            messages.error(request, 'Please correct the error below.')
-    else:
-        form = PasswordForm(request.user)
-    return render(request, './password.html', {'form': form})
+    status = False
+    interest = Interest.objects.filter(mid = request.user.member.mid)
+    for i in interest:
+        if i.matching and not i.status:
+            status = True
+            break
+    promotions = Promotion.objects.all()
+    interest = Interest
+    return render(request, './home.html',{'promotions' : promotions , 'status' : status })
 
 @login_required
-def login(request):
+def profile(request):
+    status = False
+    interest = Interest.objects.filter(mid = request.user.member.mid)
+    for i in interest:
+        if i.matching and not i.status:
+            status = True
+            break
+            
+    member = Member.objects.get(user=request.user)
+    return render(request, './profile.html', {'member' : member , 'status' : status } )
+
+def first(request):
+    return render(request, './selectlogin.html')
+
+@login_required
+def showpromotion(request,proid):
+    status = False
+    interest = Interest.objects.filter(mid = request.user.member.mid)
+    for i in interest:
+        if i.matching and not status:
+            status = True
+            break
+    promotion = Promotion.objects.get(pid = proid)
+    try:
+        interest = Interest.objects.get(mid = request.user.id)
+    except Interest.DoesNotExist:
+        interest = None
+    return render(request, './match.html',{'promotion':promotion ,'interest': interest, 'status' : status })
+
+@login_required
+def logout(request):
+     logout(request)
+     return redirect('login')   
+        
+@login_required
+def editmember(request):
+    status = False
+    interest = Interest.objects.filter(mid = request.user.member.mid)
+    for i in interest:
+        if i.matching and not i.status:
+            status = True
+            break
+    formset = MemberForm()
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        Customer = authenticate(request, username=username, password=password)
-        if Customer is not None:
-            print("user login suss")
-            login(request, Customer)
-            messages.success(request, 'login Susscess')
-            return redirect('/')            
-        else:
-            print("user login failed")            
-            messages.error(request, 'Username or password invalid')
+        formset = MemberForm(request.POST, request.FILES)
+        if formset.is_valid():
+            member = Member.objects.get(user=request.user)
+            member.user = request.user
+            member.name =  formset.cleaned_data["name"]
+            member.image = formset.cleaned_data["image"]
+            member.phone = formset.cleaned_data["phone"]
+            member.save()
+            return redirect('/profile')   
+        
+    return render(request, 'editmember.html', {'formset': formset,'status':status})
+
+@login_required
+def match(request,proid):
+
+    promotion = Promotion.objects.get(pid = proid)
+    user = Member.objects.get(user =request.user)
+    try:
+        interest = Interest.objects.filter(pid = promotion,matching=None).first()
+    except Interest.DoesNotExist:
+        interest = None
+   
+    if(interest):
+        interest.matching = user
+        interest.save()
+        interest2 = Interest.objects.create(pid = promotion, mid = user,matching = interest.mid)        
     else:
-        messages.error(request, 'Error method')
-    return redirect('/customer/login/')            
+        interest2 = Interest.objects.create(pid = promotion, mid = user)
         
-        
+    return redirect('/home')   
+
+@login_required
+def notification(request):
+    interest = Interest.objects.filter(mid = request.user.member.mid)
+    for i in interest:
+        if i.matching:
+            i.status = True
+            i.save()
+
+    return render(request, 'notification.html', {'interest': interest })
+
+@login_required
+def chat(request):
+
+    return render(request, 'chat.html')
+
