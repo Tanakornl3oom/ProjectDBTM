@@ -71,14 +71,15 @@ def showpromotion(request,proid):
     status = False
     interest = Interest.objects.filter(mid = request.user.member.mid)
     for i in interest:
-        if i.matching and not status:
+        if i.matching and i.status:
             status = True
             break
     promotion = Promotion.objects.get(pid = proid)
     try:
-        interest = Interest.objects.get(mid = request.user.id)
+        interest = Interest.objects.get(mid = request.user.member.mid, pid = proid)
     except Interest.DoesNotExist:
         interest = None
+    print(status,interest)
     return render(request, './match.html',{'promotion':promotion ,'interest': interest, 'status' : status })
 
 @login_required
